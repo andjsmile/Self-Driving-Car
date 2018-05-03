@@ -16,7 +16,7 @@ The goals / steps of this project are the following:
 [image1]: ./camera_cal/calibration*.jpg  "calibration images"
 [image2]: ./test_images/test*.jpg "test images"
 [image3]: ./output_images/undistort/undistortcalibration*.jpg "Undistorted"
-[image4]: ./output_images/pipeline/test*.png "Color & gradient threshold""Perspective transform""lanes & Radius of curvature"
+[image4]: ./output_images/part_1/test*.png "Color & gradient threshold""Perspective transform""lanes & Radius of curvature"
 [video1]: ./test_videos/project_vedio.mp4 "test Video"
 [video2]: ./test_videos_output/project_vedio.mp4 "test Video output"
 
@@ -38,6 +38,10 @@ steps:
 3.利用cv2.Sobel()函数求图像的梯度
 4.通过一定阈值将包括车道线在内的有用的部分像素置为１
 5.保留满足上述两者之一的部分，合成新的二进制图像
+
+6.这里需要注意的是：为了将黄线白线之外的物体尽量遮挡住，这里还加了一个掩膜，
+与上面得到的二进制图像像素同时为１才保留。这样可以使得在黄色线不明显的情况下
+保持较好的准确度。
 
 # 4、Perspective transform
 就是将一个图像变换为另一个视角下的样子。
@@ -75,5 +79,9 @@ HTML("""
 </video>
 """.format(output))
 
+需要改进的地方：
+有时候汽车会从大桥下穿过，或者高楼下路过，这时候会有一段时间出现阴影，导致车道上的
+黄白线不清晰，甚至拟合数据为０．这时候需要使用上一帧正确识别的图像的拟合曲线，在此基础上
+进行车道线的搜索，可以降低误差范围，尽可能正确识别。
 
 
